@@ -34,9 +34,10 @@ class _HelpScreenState extends State<HelpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.cloud_outlined,
-              size: 100,
+            Image.network(
+                'https://cdn.weatherapi.com/v4/images/weatherapi_logo.png'),
+            const SizedBox(
+              height: 20,
             ),
             const Text(
               "we show weather for you",
