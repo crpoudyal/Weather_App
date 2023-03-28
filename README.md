@@ -2,6 +2,4 @@
 
 ## Screenshots
 
-![help_screen](screenshort/1.jpg)
-![home_screen](screenshort/2.jpg)
-![not_found](screenshort/3.jpg)
+<img src="screenshort/1.jpg" width="400"> <img src="screenshort/2.jpg" width="400"> <img src="screenshort/3.jpg" width="400">
