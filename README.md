@@ -1,6 +1,7 @@
 # weather_app
 
 ## Screenshots
-<img src="screenshot/1.jpg" height="480px"> 
-<img src="screenshot/2.jpg" height="480px"> 
-<img src="screenshot/3.jpg" height="480px">
+
+![help_screen](screenshort/1.jpg)
+![home_screen](screenshort/2.jpg)
+![not_found](screenshort/3.jpg)
