@@ -34,7 +34,7 @@ class NetworkApiService extends BaseApiService {
         return responseJson;
 
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestException("No matching location found");
       case 401:
         throw UnauthorizedException(response.body.toString());
 
