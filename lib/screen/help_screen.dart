@@ -14,11 +14,17 @@ class _HelpScreenState extends State<HelpScreen> {
   @override
   void initState() {
     super.initState();
+
     // After 5 sec moves to HomeScreen
     Timer(
         const Duration(seconds: 5),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen())));
+        () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen())));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -48,8 +54,10 @@ class _HelpScreenState extends State<HelpScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
                 },
                 child: const Text("Skip"))
           ],
