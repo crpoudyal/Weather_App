@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   getLocation() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final data = sp.getString("name");
-    await homeViewModel.fetchWeatherApi(data!);
+    await homeViewModel.fetchWeatherApi(data ?? "kathmandu");
   }
 
   @override
