@@ -17,6 +17,7 @@ dependencies:
   http:
   provider:
   shared_preferences:
+  lottie:
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weather_app/screen/home_screen.dart';
 
 class HelpScreen extends StatefulWidget {
@@ -40,11 +41,8 @@ class _HelpScreenState extends State<HelpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(
-                'https://cdn.weatherapi.com/v4/images/weatherapi_logo.png'),
-            const SizedBox(
-              height: 20,
-            ),
+            Lottie.network(
+                "https://assets10.lottiefiles.com/packages/lf20_cHA3rG.json"),
             const Text(
               "we show weather for you",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),

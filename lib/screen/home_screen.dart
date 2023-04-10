@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/data/response/status.dart';
@@ -39,123 +40,144 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ChangeNotifierProvider<HomeViewModel>(
-        create: (BuildContext context) => homeViewModel,
-        child: Consumer<HomeViewModel>(
-          builder: (context, value, _) {
-            switch (value.weather.status) {
-              case Status.LOADING:
-                return const Center(child: CircularProgressIndicator());
-              case Status.ERROR:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(value.weather.message.toString()),
-                      ValueListenableBuilder(
-                        valueListenable: _changeButton,
-                        builder: (context, value, child) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 100.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextFormField(
-                                  controller: _locationController,
-                                  decoration: const InputDecoration(
-                                    hintText: "Enter Location",
-                                    prefixIcon: Icon(Icons.location_on),
-                                  ),
-                                  onChanged: (val) {
-                                    _changeButton.value = val.trim().isEmpty;
-                                  },
+      appBar: AppBar(
+        toolbarHeight: 0.0,
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            bottom: -90,
+            right: 10,
+            child: Lottie.network(
+                "https://assets10.lottiefiles.com/packages/lf20_r2gr83m9.json"),
+          ),
+          ChangeNotifierProvider<HomeViewModel>(
+            create: (BuildContext context) => homeViewModel,
+            child: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                switch (value.weather.status) {
+                  case Status.LOADING:
+                    return const Center(child: CircularProgressIndicator());
+                  case Status.ERROR:
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(value.weather.message.toString()),
+                          ValueListenableBuilder(
+                            valueListenable: _changeButton,
+                            builder: (context, value, child) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 100.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextFormField(
+                                      controller: _locationController,
+                                      decoration: const InputDecoration(
+                                        hintText: "Enter Location",
+                                        prefixIcon: Icon(Icons.location_on),
+                                      ),
+                                      onChanged: (val) {
+                                        _changeButton.value =
+                                            val.trim().isEmpty;
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          await homeViewModel.fetchWeatherApi(
+                                              _locationController.text);
+                                          final SharedPreferences sp =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          sp.setString(
+                                              'name',
+                                              _locationController.text
+                                                  .toString());
+                                        },
+                                        child: _changeButton.value
+                                            ? const Text("Save")
+                                            : const Text("Update"))
+                                  ],
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () async {
-                                      await homeViewModel.fetchWeatherApi(
-                                          _locationController.text);
-                                      final SharedPreferences sp =
-                                          await SharedPreferences.getInstance();
-                                      sp.setString('name',
-                                          _locationController.text.toString());
-                                    },
-                                    child: _changeButton.value
-                                        ? const Text("Save")
-                                        : const Text("Update"))
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              case Status.COMPLETED:
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: CardWidget(
-                          location: value.weather.data!.location,
-                          dateTime: value.weather.data!.lastUpdated,
-                          temperature:
-                              value.weather.data!.temperatureC.toString(),
-                          weatherIcon: value.weather.data!.icon,
-                          weatherCondition: value.weather.data!.conditionText,
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: _changeButton,
-                      builder: (context, value, child) {
-                        return Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 100.0),
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                controller: _locationController,
-                                decoration: const InputDecoration(
-                                  hintText: "Enter Location",
-                                  prefixIcon: Icon(Icons.location_on),
-                                ),
-                                onChanged: (val) {
-                                  _changeButton.value = val.trim().isEmpty;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    await homeViewModel.fetchWeatherApi(
-                                        _locationController.text);
-                                    final SharedPreferences sp =
-                                        await SharedPreferences.getInstance();
-                                    sp.setString('name',
-                                        _locationController.text.toString());
-                                  },
-                                  child: _changeButton.value
-                                      ? const Text("Save")
-                                      : const Text("Update"))
-                            ],
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              default:
-                return Container();
-            }
-          },
-        ),
+                        ],
+                      ),
+                    );
+                  case Status.COMPLETED:
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: CardWidget(
+                              location: value.weather.data!.location,
+                              dateTime: value.weather.data!.lastUpdated,
+                              temperature:
+                                  value.weather.data!.temperatureC.toString(),
+                              weatherIcon: value.weather.data!.icon,
+                              weatherCondition:
+                                  value.weather.data!.conditionText,
+                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: _changeButton,
+                          builder: (context, value, child) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 100.0),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: _locationController,
+                                    decoration: const InputDecoration(
+                                      hintText: "Enter Location",
+                                      prefixIcon: Icon(Icons.location_on),
+                                    ),
+                                    onChanged: (val) {
+                                      _changeButton.value = val.trim().isEmpty;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        await homeViewModel.fetchWeatherApi(
+                                            _locationController.text);
+                                        final SharedPreferences sp =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        sp.setString(
+                                            'name',
+                                            _locationController.text
+                                                .toString());
+                                      },
+                                      child: _changeButton.value
+                                          ? const Text("Save")
+                                          : const Text("Update"))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  default:
+                    return Container();
+                }
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Padding(
