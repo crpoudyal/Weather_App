@@ -24,42 +24,29 @@ class _HelpScreenState extends State<HelpScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-          image: AssetImage('assets/images/bg_frame.png'),
-          fit: BoxFit.fill,
-        )),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.network(
-                "https://assets10.lottiefiles.com/packages/lf20_cHA3rG.json"),
-            const Text(
-              "we show weather for you",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
-                },
-                child: const Text("Skip"))
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.network(
+              "https://assets10.lottiefiles.com/packages/lf20_cHA3rG.json"),
+          const Text(
+            "Weather for you",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomeScreen()));
+              },
+              child: const Text("Skip"))
+        ],
       ),
     );
   }
